@@ -5,6 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+//Firebase
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule} from '@angular/fire/storage';
+
 //Requisicoes http client
 import { HttpClientModule } from '@angular/common/http';
 
@@ -24,20 +29,28 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { RestaurantesComponent } from './restaurantes/restaurantes.component';
 import { NovoRestauranteComponent } from './novo-restaurante/novo-restaurante.component';
 import { PgRestauranteComponent } from './pg-restaurante/pg-restaurante.component';
+import { environment } from 'src/environments/environment';
+import { FiltroRestaurantePipe } from './shared/filtro-restaurante.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     RestaurantesComponent,
     NovoRestauranteComponent,
-    PgRestauranteComponent
+    PgRestauranteComponent,
+    FiltroRestaurantePipe
   ],
   imports: [
     BrowserModule,
-    //Requisicoes http client
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+
+    //Firebase
+    AngularFirestoreModule,
+    AngularFireStorageModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+
     //Material
     MatCardModule,
     MatButtonModule,

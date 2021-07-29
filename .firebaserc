@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "findfood-camilalima": {
+      "hosting": {
+        "findfood": [
+          "findfood-camilalima"
+        ]
+      }
+    }
+  }
+}

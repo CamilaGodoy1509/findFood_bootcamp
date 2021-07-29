@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NovoRestauranteComponent } from '../novo-restaurante/novo-restaurante.component';
 import { PgRestauranteComponent } from '../pg-restaurante/pg-restaurante.component';
+import { RestaurantesService } from '../shared/restaurantes.service';
 
 @Component({
   selector: 'app-restaurantes',
@@ -14,37 +15,16 @@ export class RestaurantesComponent implements OnInit {
   toSearch: any = '';
   siglas: Array<any> = [];
 
-  restaurantes: Array<any> = [
-    {
-      nome: "Jurubar",
-      estado: "Rio de Janeiro",
-      cidade: "Venda Nova",
-      descricao: "Muito bom restaurante, tem uma jurupinga batida com jabuticaba divina",
-      autorRestaurante: "Carioca",
-      criadoEm: new Date(),
-      estrelas: 5
-    }, {
-      nome: "Restaurante da Olivia",
-      estado: "São Paulo",
-      cidade: "Jundiai",
-      descricao: "Muito bom restaurante, tem uma jurupinga batida com jabuticaba divina",
-      autorRestaurante: "Lucas Santos",
-      criadoEm: new Date(),
-      estrelas: 3
-    }, {
-      nome: "Copacabana Restaurante",
-      estado: "Rio de Janeiro",
-      cidade: "Rio de Janeiro",
-      descricao: "Muito bom restaurante, tem uma jurupinga batida com jabuticaba divina",
-      autorRestaurante: "Carioca",
-      criadoEm: new Date(),
-      estrelas: 5
-    }
-  ];
+  restaurantes: Array<any> = [];
 
-  constructor(private _http: HttpClient, private dialog: MatDialog) { }
+  constructor(
+    private _http: HttpClient, private dialog: MatDialog,
+    private _restaurantesServices: RestaurantesService
+    ) { }
 
   ngOnInit(): void {
+    this.listarRestaurantes();
+
     this._http.get('https://servicodados.ibge.gov.br/api/v1/localidades/regioes/1|2|3|4|5/estados').subscribe((res: any) => {
       let estados = res;
       estados = estados.sort((a: any, b: any) => (a.nome > b.nome) ? 1 : -1);
@@ -55,6 +35,14 @@ export class RestaurantesComponent implements OnInit {
         })
       })
     })
+  }
+
+  async listarRestaurantes() {
+    await this._restaurantesServices.listarRestaurantes()
+    .subscribe(rests => {
+      this.restaurantes = rests.map(rest => rest);
+      this.restaurantes = this.restaurantes.sort((a, b) => b.criadoEm.seconds - a.criadoEm.seconds);
+    });
   }
 
   novoRestaurante() {

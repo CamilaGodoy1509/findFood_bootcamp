@@ -16,12 +16,12 @@
             </button>
           </div>
           <div id="autor">
-            <img [src]="restaurante.autorRestaurante.photoURL" width="60">
-            <p>Postado por {{ restaurante.autorRestaurante.displayName }}</p>
+            <img src="../../assets/user-placeholder.jpg" width="60">
+            <p>Postado por Bootcamper</p>
           </div>
         </div>
       </div>
-    <img src="../../assets/rest3.png" width="500" id="restaurante-img">
+      <img [src]="restaurante.downloadUrl" width="500" id="restaurante-img">
     <p>
       Restaurante localizado em {{ restaurante.cidade }} - {{ restaurante.estado }}
     </p>
