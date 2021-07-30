@@ -1,29 +1,27 @@
 <section id="detalhes">
-    <section id="restaurante">
-      <h1>{{ restaurante.nome }}</h1>
-      <div id="descricao-autor">
-        <h3>
-          "{{ restaurante.descricao }}"
-        </h3>
-        <div>
-          <div id="rating">
-            <button
-              mat-icon-button class="ic" *ngFor="let ratingId of ratingArr;index as i"
-            >
-              <mat-icon>
-                {{ showIcon(rating, i) }}
-              </mat-icon>
-            </button>
-          </div>
-          <div id="autor">
-            <img src="../../assets/user-placeholder.jpg" width="60">
-            <p>Postado por Bootcamper</p>
-          </div>
+  <section id="restaurante">
+    <h1>{{ restaurante.nome }}</h1>
+    <div id="descricao-autor">
+      <h3>
+        "{{ restaurante.descricao }}"
+      </h3>
+      <div>
+        <div id="rating">
+          <button mat-icon-button class="ic" *ngFor="let ratingId of ratingArr;index as i">
+            <mat-icon>
+              {{ showIcon(rating, i) }}
+            </mat-icon>
+          </button>
+        </div>
+        <div id="autor">
+          <img [src]="restaurante.autorRestaurante.photoURL" width="50" id="restaurante-img">
+          <p>Postado por {{ restaurante.autorRestaurante.displayName }}</p>
         </div>
       </div>
-      <img [src]="restaurante.downloadUrl" width="500" id="restaurante-img">
+    </div>
+    <img [src]="restaurante.downloadUrl" width="500" id="restaurante-img">
     <p>
-      Restaurante localizado em {{ restaurante.cidade }} - {{ restaurante.estado }}
+      Restaurante localizado em {{ restaurante.cidade }} - {{ restaurante.estado.nome }}
     </p>
   </section>
 
@@ -36,14 +34,17 @@
       <mat-card *ngFor="let comentario of comentarios_usuarios">
         <div id="usuario">
           <div>
-            <span>Comentado em: <i>{{ comentario.comentadoEm | date: 'short' }}</i></span>
+            <img [src]="comentario.autor.foto" width="30">
+            <span>{{ comentario.autor.nome }} - <i>{{ formataData(comentario.comentadoEm.seconds) }}</i></span>
           </div>
+          <mat-icon id="excluir-comentario" (click)="excluirComentario(comentario)"
+            *ngIf="usuarioLogado && comentario && usuarioLogado.uid === comentario.autor.uid">
+            delete
+          </mat-icon>
         </div>
         <p>"{{ comentario.comentario }}"</p>
         <div id="star-rating">
-          <button
-            mat-icon-button class="ic" *ngFor="let ratingId of comentarios_usuarios_ratingArr;index as i"
-          >
+          <button mat-icon-button class="ic" *ngFor="let ratingId of comentarios_usuarios_ratingArr;index as i">
             <mat-icon>
               {{ showIcon(comentario.estrelas, i) }}
             </mat-icon>
@@ -62,9 +63,8 @@
 
       <div id="save">
         <div id="star-rating">
-          <button
-            mat-icon-button class="ic" *ngFor="let ratingId of usuario_ratingArr;index as i" (click)="onClick(i+1)"
-          >
+          <button mat-icon-button class="ic" *ngFor="let ratingId of usuario_ratingArr;index as i"
+            (click)="onClick(i+1)">
             <mat-icon>
               {{ showIcon(usuario_rating, i) }}
             </mat-icon>

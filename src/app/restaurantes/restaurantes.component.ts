@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from '../auth/auth.service';
 import { NovoRestauranteComponent } from '../novo-restaurante/novo-restaurante.component';
 import { PgRestauranteComponent } from '../pg-restaurante/pg-restaurante.component';
 import { RestaurantesService } from '../shared/restaurantes.service';
@@ -17,9 +18,12 @@ export class RestaurantesComponent implements OnInit {
 
   restaurantes: Array<any> = [];
 
+  usuarioLogado: any;
+
   constructor(
     private _http: HttpClient, private dialog: MatDialog,
-    private _restaurantesServices: RestaurantesService
+    private _restaurantesServices: RestaurantesService,
+    private _authService: AuthService
     ) { }
 
   ngOnInit(): void {
@@ -35,6 +39,11 @@ export class RestaurantesComponent implements OnInit {
         })
       })
     })
+
+    this._authService.user$
+    .subscribe(userInfos => {
+      this.usuarioLogado = userInfos;
+    });
   }
 
   async listarRestaurantes() {
@@ -42,6 +51,7 @@ export class RestaurantesComponent implements OnInit {
     .subscribe(rests => {
       this.restaurantes = rests.map(rest => rest);
       this.restaurantes = this.restaurantes.sort((a, b) => b.criadoEm.seconds - a.criadoEm.seconds);
+      console.log(this.restaurantes)
     });
   }
 
@@ -50,18 +60,15 @@ export class RestaurantesComponent implements OnInit {
       width: '80%',
       height: 'max-content',
       data: {
-        usuario: '',
+        usuario: this.usuarioLogado,
         siglas: this.siglas
       }
     });
 
-    dialogRef.afterClosed().subscribe((data: any)=>{
-      this.restaurantes.push(data);
-    })
   }
 
   sair() {
-    console.log('Olá, função sair');
+    this._authService.sair();
   }
 
   abrirRestaurante(restaurante: any) {

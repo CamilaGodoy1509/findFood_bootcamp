@@ -31,6 +31,7 @@ import { NovoRestauranteComponent } from './novo-restaurante/novo-restaurante.co
 import { PgRestauranteComponent } from './pg-restaurante/pg-restaurante.component';
 import { environment } from 'src/environments/environment';
 import { FiltroRestaurantePipe } from './shared/filtro-restaurante.pipe';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { FiltroRestaurantePipe } from './shared/filtro-restaurante.pipe';
     RestaurantesComponent,
     NovoRestauranteComponent,
     PgRestauranteComponent,
-    FiltroRestaurantePipe
+    FiltroRestaurantePipe,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
